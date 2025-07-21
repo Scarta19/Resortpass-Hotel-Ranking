@@ -23,17 +23,23 @@ def load_data() -> pd.DataFrame:
     # Create a dataframe from the generated data
     return pd.DataFrame(hotel_data)
 
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
 def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Preprocesses the hotel data by handling missing values and scaling numerical features.
     """
-    # Handling missing values (if any)
-    df.fillna(df.mean(), inplace=True)
-    
+    # Separate numeric and non-numeric columns
+    numeric_columns = df.select_dtypes(include=['number']).columns
+    non_numeric_columns = df.select_dtypes(exclude=['number']).columns
+
+    # Handling missing values (fillna only for numeric columns)
+    df[numeric_columns] = df[numeric_columns].fillna(df[numeric_columns].mean())
+
     # Scaling numerical features
     scaler = StandardScaler()
-    df[['Price', 'Location_Proximity', 'Review_Score', 'Search_Count', 'CTR']] = scaler.fit_transform(
-        df[['Price', 'Location_Proximity', 'Review_Score', 'Search_Count', 'CTR']]
-    )
-    
+    df[numeric_columns] = scaler.fit_transform(df[numeric_columns])
+
     return df
+
