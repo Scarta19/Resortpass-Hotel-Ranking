@@ -1,24 +1,18 @@
-import pandas as pd
-
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import mean_squared_error
 
-def train_model(df: pd.DataFrame):
+def train_model(X_train, y_train):
     """
-    Train a GradientBoostingRegressor model on the preprocessed data.
+    Train a Gradient Boosting model on the training data.
     """
-    # Features
-    X = df[['Price', 'Location_Proximity', 'Review_Score', 'Search_Count', 'CTR']]
-    
-    # Target (Bookings)
-    y = df['Bookings']
-    
-    # Train-test split (80% training, 20% testing)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    # Initialize and train the GradientBoostingRegressor model
-    model = GradientBoostingRegressor()
+    model = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42)
     model.fit(X_train, y_train)
-    
-    # Return the trained model and test data for evaluation
-    return model, X_test, y_test
+    return model
+
+def evaluate_model(model, X_test, y_test):
+    """
+    Evaluate the model performance on the test data.
+    """
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    return mse, y_pred
