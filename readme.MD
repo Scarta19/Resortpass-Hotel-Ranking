@@ -89,8 +89,7 @@ To use the model, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/resortpass-hotel-ranking.git
-   cd resortpass-hotel-ranking
+   git clone https://github.com/Scarta19/Resortpass-Hotel-Ranking
 2. Install the required dependencies:
   pip install -r requirements.txt
 3. Open the Jupyter Notebook:
