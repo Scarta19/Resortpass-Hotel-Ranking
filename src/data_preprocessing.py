@@ -1,9 +1,6 @@
 import random
-
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler
-
 
 def load_data():
     # Generate synthetic data for hotels
@@ -25,15 +22,11 @@ def load_data():
 
 def preprocess_data(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Preprocesses the hotel data by handling missing values and scaling numerical features.
+    Preprocesses the hotel data by handling missing values.
     """
     numeric_columns = df.select_dtypes(include=['number']).columns
 
     # Handle missing values for numeric columns
     df[numeric_columns] = df[numeric_columns].fillna(df[numeric_columns].mean())
-
-    # Scaling numerical features
-    scaler = StandardScaler()
-    df[numeric_columns] = scaler.fit_transform(df[numeric_columns])
 
     return df
