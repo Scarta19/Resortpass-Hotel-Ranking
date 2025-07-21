@@ -1,15 +1,13 @@
 from sklearn.ensemble import GradientBoostingRegressor
 
-def train_model(X_train, y_train):
+def train_model(df: pd.DataFrame) -> GradientBoostingRegressor:
     """
-    Trains the Gradient Boosting model.
+    Train a GradientBoostingRegressor model on the preprocessed data.
     """
-    model = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42)
-    model.fit(X_train, y_train)
+    X = df[['Price', 'Location_Proximity', 'Review_Score', 'Search_Count', 'CTR']]  # Features
+    y = df['Bookings']  # Target: number of bookings
+    
+    model = GradientBoostingRegressor()
+    model.fit(X, y)
+    
     return model
-
-def predict(model, X_test):
-    """
-    Predicts with the trained model.
-    """
-    return model.predict(X_test)
