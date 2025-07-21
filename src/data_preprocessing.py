@@ -13,7 +13,7 @@ def load_data() -> pd.DataFrame:
         'Price': np.random.randint(100, 500, num_hotels),  # Price between 100 and 500
         'Category': np.random.choice(['Luxury', 'Economy', 'Budget'], num_hotels),
         'Location_Proximity': np.random.uniform(0.5, 20.0, num_hotels),  # Distance in miles
-        'Review_Score': np.random.uniform(2.0, 5.0, num_hotels),  # Rating between 2 and 5
+        'Review_Score': np.random.uniform(2.0, 5.0, num_hotels),  # Rating between 1 and 5
         'Search_Count': np.random.randint(50, 1000, num_hotels),  # How many times this hotel was searched
         'CTR': np.random.uniform(0.05, 0.25, num_hotels),  # CTR between 5% and 25%
         'Bookings': np.random.randint(1, 300, num_hotels),  # Number of bookings
