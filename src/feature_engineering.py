@@ -1,18 +1,13 @@
 import pandas as pd
-import numpy as np
+from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import TruncatedSVD
 
 def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
     """
     Creates new features and transforms existing ones to enhance the model.
+    This includes one-hot encoding, interaction features, text feature extraction, and scaling.
     """
-    # One-hot encoding for categorical features (e.g., Category)
-    df = pd.get_dummies(df, columns=['Category'], drop_first=True)
-
-    # Interaction feature: Price * Location Proximity
-    df['Price_Location_Interaction'] = df['Price'] * df['Location_Proximity']
-
     # TF-IDF for text features (Review_Text)
     tfidf = TfidfVectorizer(max_features=500, stop_words='english')
     X_text = tfidf.fit_transform(df['Review_Text'])
@@ -29,6 +24,18 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
 
     # Drop the original 'Review_Text' column as it's now represented by the text features
     df.drop(columns=['Review_Text'], inplace=True)
+    
+    # One-hot encoding for categorical features (e.g., Category)
+    df = pd.get_dummies(df, columns=['Category'], drop_first=True)
+
+    # Interaction feature: Price * Location Proximity
+    df['Price_Location_Interaction'] = df['Price'] * df['Location_Proximity']
+    
+    # Standardize numerical features (Price, Location_Proximity, Time_Spent)    
+    scaler = StandardScaler()
+    df[['Price', 'Location_Proximity', 'Time_Spent']] = scaler.fit_transform(df[['Price', 
+                                                                                 'Location_Proximity', 'Time_Spent']])
+
 
     # Flatten the Amenities column by creating separate binary columns for each amenity
     amenities_df = pd.DataFrame(df['Amenities'].to_list(), columns=[f'amenity_{i+1}' for i in range(5)])
