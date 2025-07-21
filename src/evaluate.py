@@ -1,11 +1,23 @@
-from sklearn.metrics import mean_squared_error, r2_score
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-def evaluate_model(model, X_test, y_test):
+def visualize_top_10_hotels(predictions):
     """
-    Evaluate the model using MSE and R-squared.
+    Visualize the top 10 hotels based on predicted bookings.
+    Ensures predicted bookings are integers for clarity.
     """
-    y_pred = model.predict(X_test)
-    mse = mean_squared_error(y_test, y_pred)
-    r2 = r2_score(y_test, y_pred)
+    # Sort the predictions by predicted bookings in descending order
+    predictions_sorted = predictions.sort_values(by='Predicted_Bookings', ascending=False)
     
-    return {'MSE': mse, 'R-squared': r2}
+    # Take the top 10 hotels with the highest predicted bookings
+    top_10 = predictions_sorted.head(10)
+
+    # Plot the top 10 hotels based on predicted bookings
+    plt.figure(figsize=(10,6))
+    sns.barplot(x='Predicted_Bookings', y='Hotel_ID', data=top_10, palette='viridis', hue='Hotel_ID', legend=False)
+    plt.title('Top 10 Hotels Based on Predicted Bookings')
+    plt.xlabel('Predicted Bookings (Rounded)')
+    plt.ylabel('Hotel ID')
+
+    # Explicitly show the plot
+    plt.show()
