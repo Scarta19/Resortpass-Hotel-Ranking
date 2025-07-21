@@ -1,17 +1,11 @@
-import pandas as pd
-from sklearn.preprocessing import StandardScaler
-
-def one_hot_encode(df):
+def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
     """
-    One-hot encodes categorical columns in the dataframe.
+    Creates new features and transforms existing ones to enhance the model.
     """
-    df = pd.get_dummies(df, drop_first=True)
-    return df
-
-def scale_features(df):
-    """
-    Scales numerical features.
-    """
-    scaler = StandardScaler()
-    df[['Price', 'Location_Proximity', 'Time_Spent']] = scaler.fit_transform(df[['Price', 'Location_Proximity', 'Time_Spent']])
+    # Creating price categories
+    df['Price_Category'] = pd.cut(df['Price'], bins=[0, 200, 400, 500], labels=['Budget', 'Economy', 'Luxury'])
+    
+    # Review sentiment analysis (basic placeholder logic)
+    df['Review_Sentiment'] = np.where(df['Review_Score'] > 4.0, 'Positive', 'Negative')
+    
     return df
